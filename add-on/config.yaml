@@ -1,0 +1,55 @@
+name: "nowTalk Server"
+description: "The ComBadge nowTalk Server"
+
+version: "1.1.1"
+slug: "nowtalk_server"
+
+url: https://github.com/LumenSoftNL/nowTalk2.0/tree/main/server
+
+arch:
+  - amd64
+  - aarch64
+
+discovery:
+  - wyoming
+map:
+  - share
+  - config
+
+panel_icon: mdi:account-voice
+
+
+options:
+  sound_enabled: true
+  noise_suppression: 0
+  auto_gain: 0
+  mic_volume_multiplier: 1.0
+  sound_volume_multiplier: 1.0
+  debug_logging: false
+
+schema:
+  sound_enabled: bool
+  noise_suppression: int
+  auto_gain: int
+  mic_volume_multiplier: float
+  sound_volume_multiplier: float
+  debug_logging: bool
+audio: true
+
+homeassistant: 2024.07.0
+image: LumenSoftNL/{arch}-nowtalk-server
+
+ports:
+  12158/tcp: 12158
+
+
+startup: "services"
+boot: "auto"
+
+init: false
+host_network: true
+homeassistant_api: true
+hassio_api: true
+
+stdin: true
+ingress: true
