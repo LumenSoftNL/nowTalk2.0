@@ -6,3 +6,9 @@
 build
 managed_components
 dependencies.lock
+add-on/switchboard/node_modules/
+add-on/switchboard/https/dhparam.pem
+add-on/switchboard/https/selfsigned.crt
+add-on/switchboard/https/selfsigned.key
+add-on/switchboard/nowTalk.ini
+add-on/switchboard/nowTalk.sqlite
