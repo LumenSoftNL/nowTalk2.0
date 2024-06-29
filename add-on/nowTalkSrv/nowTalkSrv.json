@@ -1,0 +1,13 @@
+{
+    "commport": "com15",
+    "baudrate": "115200",
+    "database": "./nowTalk.sqlite",
+    "switchboardName": "Bosdrift228",
+    "callname": "computer",
+    "dynamicExtIP": "false",
+    "externelIP": "false",
+    "allowGuests": true,
+    "webAddress": "*",
+    "webPort": "1215",
+    "allowNewDevice": true
+}

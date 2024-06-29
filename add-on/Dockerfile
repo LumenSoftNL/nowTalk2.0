@@ -1,17 +1,12 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+FROM node:22.3.0
 
-# Install requirements for add-on
-RUN \
-  apk add --no-cache \
-    python3
+WORKDIR /nowTalkSrv
 
-# Python 3 HTTP Server serves the current working dir
-# So let's set it to our add-on persistent data directory.
-WORKDIR /data
+COPY package.json package.json
+COPY package-lock.json package-lock.json
 
-# Copy data for add-on
-COPY run.sh /
-RUN chmod a+x /run.sh
+RUN npm install
 
-CMD [ "/run.sh" ]
+COPY . .
+
+CMD [ "node", "app.js" ]

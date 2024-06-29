@@ -12,3 +12,4 @@ add-on/switchboard/https/selfsigned.crt
 add-on/switchboard/https/selfsigned.key
 add-on/switchboard/nowTalk.ini
 add-on/switchboard/nowTalk.sqlite
+add-on/node_modules/
