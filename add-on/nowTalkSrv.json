@@ -1,5 +1,5 @@
 {
-    "commport": "com3",
+    "commport": "com20",
     "baudrate": "115200",
     "database": "./nowTalk.sqlite",
     "switchboardName": "Bosdrift228",
