@@ -2,7 +2,7 @@
 /*jshint esversion: 10 */
 "use strict";
 
-import { constants, createSecureServer } from "http2";
+import { constants, createServer } from "http2";
 import { readFileSync } from 'fs';
 import { hrtime } from 'process';
 
@@ -17,8 +17,8 @@ const {
 } = constants;
 
 const options = {
-    key: readFileSync('https/selfsigned.key'),
-    cert: readFileSync('https/selfsigned.crt')
+   // key: readFileSync('https/selfsigned.key'),
+   // cert: readFileSync('https/selfsigned.crt')
 }
 
 
@@ -67,7 +67,7 @@ class Dashboard {
         this.onUpdateBadges = this.onUpdateBadges.bind(this);
         this.requestListener = this.requestListener.bind(this);
 
-        this.server =  createSecureServer(options, this.requestListener);
+        this.server =  createServer(options, this.requestListener);
             // http.createServer(this.requestListener);
         this.io = new Server(this.server);
 

@@ -69,6 +69,8 @@ class MainClass extends EventEmitter {
     this.onHandle_Error = this.onHandle_Error.bind(this);
     this.onRequestExternalIP = this.onRequestExternalIP.bind(this);
     this.onWeb_editBadge = this.onWeb_editBadge.bind(this);
+    this.webMessage = this.webMessage.bind(this);
+    this.onPortError = this.onPortError.bind(this);
   }
 
   async start() {
@@ -261,6 +263,14 @@ class MainClass extends EventEmitter {
     this.serialPort.close();
   }
 
+  webMessage(key, msg) {
+    if (this.web) {
+        this.web.addMessage(key, msg);
+    }
+
+  }
+
+
   sendMessage(mac, code, data) {
     if (typeof data === "undefined") data = "";
     if (ignoreCodes.indexOf(code) === -1) {
@@ -271,7 +281,7 @@ class MainClass extends EventEmitter {
         "h" + ("00" + code.toString(16)).substr(-2),
         data.toString(),
       ];
-      this.web.addMessage("send", JSON.stringify(_msg));
+      this.webMessage("send", JSON.stringify(_msg));
     }
 
     var buf = Buffer.alloc(9);
@@ -336,12 +346,12 @@ class MainClass extends EventEmitter {
             } else {
               //  this.updateBadge(user);
               user._newName = value;
-              this.web.addMessage("success", "Name has been changed.");
+              this.webMessage("success", "Name has been changed.");
             }
           } else {
             user.name = value;
             this.updateBadge(user);
-            this.web.addMessage("success", "Name has been changed.");
+            this.webMessage("success", "Name has been changed.");
           }
           return;
         default:
@@ -350,7 +360,7 @@ class MainClass extends EventEmitter {
     } else {
       this.web.onUpdateBadges();
     }
-    this.web.addMessage("danger", "Change was not allowed.");
+    this.webMessage("danger", "Change was not allowed.");
   }
 
   onRequestExternalIP() {
@@ -389,7 +399,7 @@ class MainClass extends EventEmitter {
           main.config.bridge.channel = bridge[3];
           main.config.bridge.bridgeID = bridge[4];
         }
-        main.web.addMessage("success", "Bridge is alive. ");
+        main.webMessage("success", "Bridge is alive. ");
         console.info(
           "Bridge is alive. ",
           "Version:" + main.config.bridge.version,
@@ -410,7 +420,7 @@ class MainClass extends EventEmitter {
     timer = setTimeout(() => {
       main.parser.off("data", response);
       let msg = "Bridge did not response on time.";
-      this.web.addMessage("danger", msg);
+      this.webMessage("danger", msg);
       console.error(msg);
       main.closeSwitchBoard();
     }, 1500);
@@ -425,7 +435,7 @@ class MainClass extends EventEmitter {
     this.closeSwitchBoard();
     if (!this.closePort) {
       console.warn("SerialPort closed... waiting 5 sec.");
-      this.web.addMessage("danger", "SerialPort closed... waiting 5 sec.");
+      this.webMessage("danger", "SerialPort closed... waiting 5 sec.");
       setTimeout(this._reconnect.bind(this), 5000);
     }
   }
@@ -433,7 +443,7 @@ class MainClass extends EventEmitter {
   onPortError() {
     if (!this.closePort) {
       console.error("SerialPort not found ... waiting 5 sec.");
-      this.web.addMessage("danger", "SerialPort not found ... waiting 5 sec.");
+      this.webMessage("danger", "SerialPort not found ... waiting 5 sec.");
       setTimeout(this._reconnect.bind(this), 5000);
     }
   }
@@ -508,7 +518,7 @@ class MainClass extends EventEmitter {
       main.off("web_newBadge", onWeb_newBadge);
       this.unPeer(msg.mac);
       this.web.addNewBadge(false);
-      main.web.addMessage("success", "Timeout while adding new device.");
+      main.webMessage("success", "Timeout while adding new device.");
       this.newBadgeInUse = false;
     };
 
@@ -522,7 +532,7 @@ class MainClass extends EventEmitter {
       user.setStatus(0x01);
       user.updateTimer();
       main.updateBadge(user);
-      main.web.addMessage("success", "New badge has been added.");
+      main.webMessage("success", "New badge has been added.");
       this.newBadgeInUse = false;
       return true;
     };
@@ -608,24 +618,24 @@ class MainClass extends EventEmitter {
         }
       }
     } else {
-      this.web.addMessage("danger", "New Badge in use.");
+      this.webMessage("danger", "New Badge in use.");
     }
   }
 
   onHandle_Info(msg) {
-    this.web.addMessage("info", msg.toString());
+    this.webMessage("info", msg.toString());
     console.info("Info: ", msg.toString());
     return true;
   }
 
   onHandle_Error(msg) {
-    this.web.addMessage("danger", msg.toString());
+    this.webMessage("danger", msg.toString());
     console.error("Error: ", msg.toString());
     return true;
   }
 
   onHandle_Warning(msg) {
-    this.web.addMessage("warning", msg.toString());
+    this.webMessage("warning", msg.toString());
     console.warn("Warning: ", msg.toString());
     return true;
   }
