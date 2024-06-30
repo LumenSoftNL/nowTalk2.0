@@ -7,9 +7,9 @@ build
 managed_components
 dependencies.lock
 
-add-on/nowTalkSrv/https/dhparam.pem
-add-on/nowTalkSrv/https/selfsigned.crt
-add-on/nowTalkSrv/https/selfsigned.key
-add-on/nowTalkSrv/nowTalk.json
-add-on/nowTalkSrv/nowTalk.sqlite
-add-on/node_modules/
+nowtalk_srv/app/https/dhparam.pem
+nowtalk_srv/app/https/selfsigned.crt
+nowtalk_srv/app/https/selfsigned.key
+nowtalk_srv/app/nowTalk.json
+nowtalk_srv/app/nowTalk.sqlite
+nowtalk_srv/node_modules/

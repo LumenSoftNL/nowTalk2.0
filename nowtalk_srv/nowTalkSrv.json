@@ -1,8 +1,7 @@
 {
     "commport": "com20",
     "baudrate": "115200",
-    "database": "./nowTalk.sqlite",
-    "switchboardName": "Bosdrift228",
+    "database": "./nowTalkSrv.sqlite",
     "callname": "computer",
     "dynamicExtIP": "false",
     "externelIP": "false",
