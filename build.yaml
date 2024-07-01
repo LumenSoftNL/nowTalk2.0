@@ -1,9 +1,0 @@
-
-build_from:
-  amd64: ghcr.io/home-assistant/amd64-base-debian:bookworm
-  aarch64: ghcr.io/home-assistant/aarch64-base-debian:bookworm
-codenotary:
-  signer: mail@lumensoft.nl
-  base_image: mail@lumensoft.nl
-args:
-  WYOMING_SATELLITE_VERSION: 1.2.0
