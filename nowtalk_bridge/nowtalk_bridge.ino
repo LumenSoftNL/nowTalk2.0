@@ -69,7 +69,7 @@ void add_peer(const uint8_t* mac) {
 }
 
 void setup() {
-  Serial.begin(921600);
+  Serial.begin(512000);
   Serial.setDebugOutput(true);
   Serial.print(F("* NowTalk Bridge Version:"));
   Serial.println(VERSION);

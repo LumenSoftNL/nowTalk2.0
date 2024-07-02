@@ -9,4 +9,4 @@ codenotary:
   signer: mail@lumensoft.nl
   base_image: mail@lumensoft.nl
 args:
-  NOWTALK_SRV_VERSION: 1.1.1
+  NOWTALK_SRV_VERSION: 1.1.15

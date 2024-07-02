@@ -18,7 +18,7 @@ import { exit } from "process";
 const version = "0.5.1";
 
 const config = {
-  commport: "com1",
+  commport: "none",
   baudrate: 115200,
   database: "./nowTalkSrv.sqlite",
   switchboardName: "SwitchBoard",
@@ -75,7 +75,6 @@ program
   .description(
     "The nowTalk Switchboard server for communicating over a serial port. Pressing ctrl+c exits."
   )
-  .option("-l, --list", "Show all available serial ports.")
   .option(
     "-p, --port <commport>",
     "Commport name of the serial port",
@@ -137,86 +136,21 @@ const listPorts = async () => {
   }
 };
 
-const run = async () => {
-  if (args.list) {
-    listPorts();
-    return;
-  }
 
   if (config.commport === "none") {
-    program
-      .addHelpText(
-        "after",
-        `
-No commport selected use the following statements to continue:
-    $ nowTalkSrv -l
-         to show the list of commports or
-    $ nowTalkSrv -p com1
-         to select the right port. `
-      )
-      .help();
 
+    const run = async () => {
+      if (args.list) {
+        listPorts();
+        return;
+      }
+
+    console.log("No commport selected use the following statements to continue:");
+    listPorts();
     _exit(1);
   }
+
   const main = new MainClass(config);
-
-  if (args.demo) {
-    main.getBadge(12342, { name: "pietje", ip: "", status: 0x10 });
-    main.getBadge(12354, { name: "katotje", ip: "", status: 0x90 });
-    main.getBadge(12534, { name: "jantje", ip: "", status: 0x11 });
-    main.getBadge(122534, { name: "jasmijn", ip: "255", status: 0xa0 });
-    main.getBadge(12734, { name: "prettje", ip: "4567", status: 0x20 });
-    main.getBadge(1233904, {
-      name: "qwiebes szfasdfasdfb vdfgadfa dvrgerf",
-      ip: "6e43sd4545 4244 462465 4662435 33453 n",
-      status: 0x11,
-    });
-    main.getBadge(1222534, { name: "saniw", ip: "ssd255", status: 0x11 });
-
-    main.getBadge(122534, { name: "andre", ip: "123", status: 0x03 });
-    main.getBadge(127434, { name: "alvert", ip: "334", status: 0xa0 });
-    main.getBadge(123354, { name: "qwiebes", ip: "566", status: 0x02 });
-    main.getBadge(1234354, { name: "zander", ip: "as566", status: 0x80 });
-
-    main.getBadge(14222534, { name: "saniw", ip: "ssd255", status: 0x11 });
-
-    main.getBadge(1422534, { name: "andre", ip: "123", status: 0x03 });
-    main.getBadge(1427434, { name: "alvert", ip: "334", status: 0xa0 });
-    main.getBadge(1423354, { name: "qwiebes", ip: "566", status: 0x02 });
-    main.getBadge(14234354, { name: "zander", ip: "as566", status: 0x80 });
-
-    main.getBadge(1922534, { name: "andre", ip: "123", status: 0x03 });
-    main.getBadge(1927434, { name: "alvert", ip: "334", status: 0xa0 });
-    main.getBadge(1923354, { name: "qwiebes", ip: "566", status: 0x02 });
-    main.getBadge(19234354, { name: "zander", ip: "as566", status: 0x80 });
-
-    main.getBadge(194222534, { name: "saniw", ip: "ssd255", status: 0x11 });
-
-    main.getBadge(19422534, { name: "andre", ip: "123", status: 0x03 });
-    main.getBadge(19427434, { name: "alvert", ip: "334", status: 0xa0 });
-    main.getBadge(19423354, { name: "qwiebes", ip: "566", status: 0x02 });
-    main.getBadge(194234354, { name: "zander", ip: "as566", status: 0x80 });
-
-    main.web.addMessage("primary", "this is primary message");
-    main.web.addMessage("info", "this is info message");
-    main.web.addMessage("success", "this is success message");
-    main.web.addMessage("warning", "this is warning message");
-
-    main.web.addMessage(
-      "recv",
-      "this is received message\nsdjkasuidhfaisdf\nndfIHASUIZHXCNASC\nijisjaidhf"
-    );
-    main.web.addMessage(
-      "send",
-      "this is warning message\n snjkhsdjhaskmx sndjkhasefn\nsdbjhbsdjhb"
-    );
-
-    main.web.addMessage("danger", "this is danger message");
-  }
-
-  if (config.commport === "<none>") {
-    config.commport = await askForPort();
-  }
   await main.start();
 
 };

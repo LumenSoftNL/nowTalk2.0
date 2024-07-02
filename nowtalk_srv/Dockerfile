@@ -9,4 +9,4 @@ COPY /app /
 
 WORKDIR /data
 
-CMD [ "node", "app.mjs" ]
+CMD [ "node", "/app.mjs","--config options.json" ]

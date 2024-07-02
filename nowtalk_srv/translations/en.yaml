@@ -21,41 +21,44 @@ audio:
     description: >-
       Multiply sound output volume by fixed value (1.0 = no change, 2.0 = twice
       as loud). 1.0 is the default.
-  debug_logging:
-    name: Debug logging
-    description: >-
-      Enable debug logging.
-  nowtalk:
-    commport:
-      name: Comm port address
-      description: At which Serial port is the ComBridge connected
-    baudrate:
-      name: Baud Rate
-      description: communication speed between the nowTalk server and ComBridge
-    database:
-      name: Database Name
-      description: You can give the combadge user database your own name
-    serverName:
-      name: Server name
-      description: For when you like to give your NowTalk server a name
-    callname:
-      name: Call name
-      description: To which name would the nowTalk server response
-    dynamicExtIP:
-      name: Enable SSL
-      description: Enable usage of SSL on the webserver inside the add-on
-    externelIP:
-      name: Allow external uses
-      description: Enable external use of your comBadges
-    allowGuests:
-      name: Allow Guest uses
-      description: Allow other ComBadges to use your server to call home
-    webAddress:
-      name: Enable SSL
-      description: Enable usage of SSL on the webserver inside the add-on
-    webPort:
-      name: Enable SSL
-      description: Enable usage of SSL on the webserver inside the add-on
-    allowNewDevice:
-      name: Enable SSL
-      description: Enable usage of SSL on the webserver inside the add-on
+debug_logging:
+  name: Debug logging
+  description: >-
+    Enable debug logging.
+
+commport:
+  name: Comm port address
+  description: At which Serial port is the ComBridge connected
+baudrate:
+  name: Baud Rate
+  description: communication speed between the nowTalk server and ComBridge
+database:
+  name: Database Name
+  description: You can give the combadge user database your own name
+serverName:
+  name: Server name
+  description: For when you like to give your NowTalk server a name
+callname:
+  name: Call name
+  description: To which name would the nowTalk server response
+dynamicExtIP:
+  name: Enable SSL
+  description: Enable usage of SSL on the webserver inside the add-on
+externelIP:
+  name: Allow external uses
+  description: Enable external use of your comBadges
+allowGuests:
+  name: Allow Guest uses
+  description: Allow other ComBadges to use your server to call home
+webAddress:
+  name: Enable SSL
+  description: Enable usage of SSL on the webserver inside the add-on
+webPort:
+  name: Enable SSL
+  description: Enable usage of SSL on the webserver inside the add-on
+allowNewDevice:
+  name: Enable SSL
+  description: Enable usage of SSL on the webserver inside the add-on
+
+network:
+  12158/TCP: The nowTalk network port (Not used for Ingress)
