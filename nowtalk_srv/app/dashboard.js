@@ -21,7 +21,6 @@ const options = {
    // cert: readFileSync('https/selfsigned.crt')
 }
 
-
 const users = [];
 
 // Join user to chat
@@ -94,11 +93,8 @@ class Dashboard {
             this.onUpdateBadges(socket);
         });
 
-        if (main.config.webAddress === "*") {
-            this.server.listen(main.config.webPort);
-        } else {
-            this.server.listen(main.config.webPort, main.config.webAddress);
-        }
+        this.server.listen( 8099 );
+
         this.timer = setInterval(this.onUpdateBadges, 2500, this.io);
     }
 

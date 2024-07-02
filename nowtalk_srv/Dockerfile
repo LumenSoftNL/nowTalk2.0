@@ -1,12 +1,12 @@
 FROM node:22.3.0
 
-
-
-COPY package.json package.json
-COPY package-lock.json package-lock.json
+COPY /app/package.json package.json
+COPY /app/package-lock.json package-lock.json
 
 RUN npm install
 
 COPY /app /
 
-CMD [ "node", "app.js" ]
+WORKDIR /data
+
+CMD [ "node", "app.mjs" ]

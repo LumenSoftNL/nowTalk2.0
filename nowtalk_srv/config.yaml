@@ -1,7 +1,7 @@
 name: "nowTalk Server"
 description: "The ComBadge nowTalk Server"
 
-version: "1.1.4"
+version: "1.1.11"
 slug: "nowtalk_srv"
 
 url: https://github.com/LumenSoftNL/nowTalk2.0
@@ -16,12 +16,11 @@ arch:
 discovery:
   - ComBadge
 
-
 panel_icon: mdi:account-voice
 homeassistant: 2024.06.0
 
 options:
-  nowTalk:
+  nowtalk:
     commport: "none"
     baudrate: "921600"
     dynamicExtIP: false
@@ -38,7 +37,7 @@ options:
   debug_logging: false
 
 schema:
-  nowTalk:
+  nowtalk:
     commport: str
     baudrate: int?
     database: str?
@@ -49,6 +48,7 @@ schema:
     allowGuests: bool?
     webAddress: str?
     webPort: int?
+    allowNewDevice: bool?
   Audio:
     sound_enabled: bool
     noise_suppression: int
@@ -57,24 +57,19 @@ schema:
     sound_volume_multiplier: float
   debug_logging: bool
 
-audio: true
-
-image: LumenSoftNL/{arch}-nowtalk-server
 
 ports:
   12158/tcp: 12158
 
+init: false
 startup: "services"
 boot: "auto"
 
-init: false
+
 host_network: true
 homeassistant_api: true
 hassio_api: true
-
+audio: true
 usb: true
-
 auth_api: true
-
 ingress: true
-ingress_port: 0

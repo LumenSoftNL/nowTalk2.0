@@ -4,7 +4,7 @@
   "main": "./nowTalkSrv/app.js",
   "author": "Np v/d Spek",
   "license": "ISC",
-  "version": "1.1.3",
+  "version": "1.1.9",
   "type": "module",
   "dependencies": {
     "serialport": "^12.0.0",
@@ -14,7 +14,7 @@
     "sqlite3": "^5.1.7"
   },
   "bin": {
-    "app": "./nowTalkSrv/app.js"
+    "app": "./app.mjs"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
