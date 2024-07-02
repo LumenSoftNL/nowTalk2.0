@@ -1,7 +1,7 @@
 name: "nowTalk Server"
 description: "The ComBadge nowTalk Server"
 
-version: "1.1.11"
+version: "1.1.12"
 slug: "nowtalk_srv"
 
 url: https://github.com/LumenSoftNL/nowTalk2.0
@@ -49,7 +49,7 @@ schema:
     webAddress: str?
     webPort: int?
     allowNewDevice: bool?
-  Audio:
+  audio:
     sound_enabled: bool
     noise_suppression: int
     auto_gain: int
@@ -57,14 +57,12 @@ schema:
     sound_volume_multiplier: float
   debug_logging: bool
 
-
 ports:
   12158/tcp: 12158
 
 init: false
 startup: "services"
 boot: "auto"
-
 
 host_network: true
 homeassistant_api: true
