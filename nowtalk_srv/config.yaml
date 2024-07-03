@@ -1,7 +1,7 @@
 name: "nowTalk Server"
 description: "The ComBadge nowTalk Server"
 
-version: "1.1.23"
+version: "1.1.58"
 slug: "nowtalk_srv"
 
 url: https://github.com/LumenSoftNL/nowTalk2.0
@@ -13,20 +13,14 @@ arch:
   - armv7
   - i386
 
-discovery:
-  - ComBadge
+#discovery:
+#  - combadge
 
 panel_icon: mdi:account-voice
-homeassistant: 2024.06.0
+homeassistant: 2024.6.0
 
 options:
-  commport: none
-  baudrate: "115200"
-  dynamicExtIP: false
-  externelIP: false
-  allowGuests: true
-  webAddress: "*"
-  allowNewDevice: true
+  serialport: ""
   audio:
     sound_enabled: true
     noise_suppression: 0
@@ -36,17 +30,17 @@ options:
   debug_logging: false
 
 schema:
-  commport: str
+  serialport: device(subsystem=tty)
   baudrate: int?
   database: str?
-  serverName: str?
-  callname: str?
-  dynamicExtIP: bool?
-  externelIP: bool?
-  allowGuests: bool?
-  webAddress: str?
-  webPort: int?
-  allowNewDevice: bool?
+  server_name: str?
+  call_name: str?
+
+  external_ip: str?
+  dynamic_ext_ip: bool?
+  allow_guests: bool?
+
+  allow_new_device: bool?
   audio:
     sound_enabled: bool
     noise_suppression: int
@@ -62,10 +56,15 @@ init: false
 startup: "services"
 boot: "auto"
 
-host_network: true
-homeassistant_api: true
-hassio_api: true
-audio: true
-usb: true
-auth_api: true
+#host_network: true
+#homeassistant_api: true
+#$hassio_api: true
+#audio: true
+#usb: true
+#auth_api: true
+
+#uart: true
+#devicetree: true
+
 ingress: true
+ingress_port: 8099

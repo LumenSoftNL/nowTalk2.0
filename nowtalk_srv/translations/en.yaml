@@ -26,7 +26,7 @@ debug_logging:
   description: >-
     Enable debug logging.
 
-commport:
+serialport:
   name: Comm port address
   description: At which Serial port is the ComBridge connected
 baudrate:
@@ -38,16 +38,16 @@ database:
 serverName:
   name: Server name
   description: For when you like to give your NowTalk server a name
-callname:
+call_name:
   name: Call name
   description: To which name would the nowTalk server response
-dynamicExtIP:
+dynamic_ext_ip:
   name: Enable SSL
   description: Enable usage of SSL on the webserver inside the add-on
-externelIP:
+external_ip:
   name: Allow external uses
   description: Enable external use of your comBadges
-allowGuests:
+allow_guests:
   name: Allow Guest uses
   description: Allow other ComBadges to use your server to call home
 webAddress:
@@ -56,7 +56,7 @@ webAddress:
 webPort:
   name: Enable SSL
   description: Enable usage of SSL on the webserver inside the add-on
-allowNewDevice:
+allow_new_device:
   name: Enable SSL
   description: Enable usage of SSL on the webserver inside the add-on
 

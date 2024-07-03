@@ -50,8 +50,6 @@ function userCount() {
     return users.size;
 }
 
-
-
 const MAX_MSGS = 100;
 
 class Dashboard {
@@ -71,6 +69,7 @@ class Dashboard {
         this.io = new Server(this.server);
 
         this.io.on('connection', socket => {
+            console.log("IO connected: ",socket.id);
             const user = userJoin(socket.id, 'username', 'room');
             // handle newBadge return
             socket.on("newBadge", data => {
@@ -93,12 +92,15 @@ class Dashboard {
             this.onUpdateBadges(socket);
         });
 
-        this.server.listen( 8099 );
-
+        this.server.listen( 8099, "0.0.0.0", () => {
+            console.log(`Server is running on port 8099`);
+        });
+        console.error("Dashboard is listen! ");
         this.timer = setInterval(this.onUpdateBadges, 2500, this.io);
     }
 
     stop() {
+        console.error("Closing dashboard! ");
         clearInterval(this.timer);
         this.clients.forEach(connection => {
             if (!connection) return;
@@ -126,6 +128,8 @@ class Dashboard {
                     });
                 }
          */
+        console.log(req.method, " page: ",req.url);
+
         if (req.method === 'GET' && req.url === '/client.js') {
             res.setHeader('Content-type', 'text/javascript');
             res.writeHead(200);
@@ -134,7 +138,7 @@ class Dashboard {
         if (req.method === 'GET' && req.url === '/espserial.js') {
             res.setHeader('Content-type', 'text/javascript');
             res.writeHead(200);
-            return res.end(readFileSync("./utils/espserial.js"));
+            return res.end(readFileSync("./webpages/espserial.js"));
         }
 
         switch (req.url) {
@@ -144,6 +148,7 @@ class Dashboard {
                 res.writeHead(200);
                 //       this.indexFile =;
                 res.end(readFileSync("./webpages/index.html"));
+                console.log("web Page opened");
                 break;
             default:
                 res.writeHead(404);

@@ -14,6 +14,9 @@ import nowTalkHttps from "./dashboard.js";
 
 import { exit } from "process";
 
+import * as net from 'net';
+
+
 const ignoreCodes = []; // 0x01, 0x02, 0x77, 0x04, 0x10, 0x11
 
 function checkSum(str) {
@@ -46,9 +49,9 @@ class MainClass extends EventEmitter {
     this.closePort = false;
 
     if (
-      typeof config.externelIP === "undefined" ||
-      config.externelIP == "" ||
-      config.dynamicExtIP == "true"
+      typeof config.external_ip === "undefined" ||
+      config.external_ip == "" ||
+      config.dynamic_ext_ip == "true"
     ) {
       this.onRequestExternalIP();
       this.dynamicIpTimer = setInterval(
@@ -71,6 +74,14 @@ class MainClass extends EventEmitter {
     this.onWeb_editBadge = this.onWeb_editBadge.bind(this);
     this.webMessage = this.webMessage.bind(this);
     this.onPortError = this.onPortError.bind(this);
+
+    var server = net.createServer(function(socket) {
+      socket.write('Echo server\r\n');
+      socket.pipe(socket);
+    });
+
+    server.listen(12158);
+
   }
 
   async start() {
@@ -174,7 +185,7 @@ class MainClass extends EventEmitter {
       db.close();
     }
 
-    if (isNew && (info === false || this.config.allowGuests)) {
+    if (isNew && (info === false || this.config.allow_guests)) {
       if (info === false) info = {};
       user = new nowTalkUser(
         {
@@ -241,8 +252,17 @@ class MainClass extends EventEmitter {
       this.disconnect();
     }
     this.closePort = false;
+    if (!this.config.serialport) {
+      return null;
+    }
+      console.log(
+        "Opening serial port: ",
+        this.config.serialport,
+        " Baudrate: ",
+        this.config.baudrate
+      );
     this.serialPort = new SerialPort({
-      path: this.config.commport,
+      path: this.config.serialport,
       baudRate: this.config.baudrate,
       autoOpen: false,
     });
@@ -265,11 +285,9 @@ class MainClass extends EventEmitter {
 
   webMessage(key, msg) {
     if (this.web) {
-        this.web.addMessage(key, msg);
+      this.web.addMessage(key, msg);
     }
-
   }
-
 
   sendMessage(mac, code, data) {
     if (typeof data === "undefined") data = "";
@@ -367,7 +385,7 @@ class MainClass extends EventEmitter {
     /*
         get('http://api.ipify.org/?format=text')
             .then(result => {
-                this.config.externelIP = result.data;
+                this.config.external_ip = result.data;
                 this.web.updateConfig();
             }).catch(error => {
                 console.log(error);
@@ -550,15 +568,15 @@ class MainClass extends EventEmitter {
         let test =
           body.badgeid +
           "~" +
-          this.config.externelIP +
+          this.config.external_ip +
           "~" +
           body.username +
           "~" +
-          this.config.switchboardName;
+          this.config.server_name;
         test += "~" + checkSum("nowTalkSrv!" + test, "utf8");
         newbadge = {
           mac: msg.mac,
-          ip: this.config.externelIP,
+          ip: this.config.external_ip,
           name: body.username,
           key: body.badgeid,
         };
@@ -591,15 +609,15 @@ class MainClass extends EventEmitter {
         let test =
           user.badgeID +
           "~" +
-          this.config.externelIP +
+          this.config.external_ip +
           "~" +
           user.name +
           "~" +
-          this.config.switchboardName;
+          this.config.server_name;
         test += "~" + checkSum("nowTalkSrv!" + test, "utf8");
         newbadge = {
           mac: msg.mac,
-          ip: this.config.externelIP,
+          ip: this.config.external_ip,
           name: user.name,
           key: user.badgeID,
           status: user.status,

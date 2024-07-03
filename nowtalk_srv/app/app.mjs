@@ -6,8 +6,7 @@ import { Command } from "commander";
 
 import { existsSync, readFileSync, writeFileSync } from "fs";
 
-import { SerialPort} from "serialport";
-
+import { SerialPort } from "serialport";
 
 import MainClass from "./main.js";
 
@@ -15,22 +14,22 @@ import { argv, exit as _exit } from "process";
 
 import { exit } from "process";
 
-const version = "0.5.1";
+const version = "1.1.51";
 
+// this should be changed to lower cases
 const config = {
-  commport: "none",
-  baudrate: 115200,
+  serialport: "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0", //"/dev/ttyUSB1",
+  baudrate: 512000,
   database: "./nowTalkSrv.sqlite",
-  switchboardName: "SwitchBoard",
-  callname: "computer",
-  dynamicExtIP: false,
-  externelIP: "",
-  allowGuests: true,
-  webAddress: "*", //127.0.0.1
-  webPort: 1215,
-  allowNewDevice: true,
-  badgeTimeout: 60,
-  config: "./nowTalkSrv.json",
+  server_name: "SwitchBoard",
+  call_name: "computer",
+  dynamic_ext_ip: false,
+  external_ip: "",
+  allow_guests: false,
+
+  allow_new_device: true,
+  badge_timeout: 60,
+
   version: version,
 };
 
@@ -44,25 +43,24 @@ function loadConfig(args) {
     newConfig = JSON.parse(readFileSync(inifile, "utf-8"));
   }
 
-  config.commport = args.port || newConfig.commport || config.commport;
+  config.serialport =
+    args.serialport || newConfig.serialport || config.serialport;
   config.baudrate = makeNumber(
-    args.baud || newConfig.baudrate || config.baudrate
+    args.baudrate || newConfig.baudrate || config.baudrate
   );
-  config.database = args.sqlite || newConfig.database || config.database;
-  config.switchboardName =
-    args.name || newConfig.switchboardName || config.switchboardName;
-  config.callname = args.callname || newConfig.callname || config.callname;
-  config.allowGuests = newConfig.allowGuests || config.allowGuests;
-  config.dynamicExtIP =
-    args.dynamicIP || newConfig.dynamicExtIP || config.dynamicExtIP;
-  config.externelIP =
-    args.externelIP || newConfig.externelIP || config.externelIP;
+  config.database = args.database || newConfig.database || config.database;
+  config.server_name =
+    args.server_name || newConfig.server_name || config.server_name;
+  config.call_name = args.call_name || newConfig.call_name || config.call_name;
 
-  config.webAddress =
-    args.webaddress || newConfig.webAddress || config.webAddress;
-  config.webPort = args.webport || newConfig.webPort || config.webPort;
-  config.badgeTimeout =
-    args.timeout || newConfig.badgeTimeout || config.badgeTimeout;
+  config.external_ip =
+    args.external_ip || newConfig.external_ip || config.external_ip;
+  config.dynamic_ext_ip =
+    args.dynamic_ext_ip || newConfig.dynamic_ext_ip || config.dynamic_ext_ip;
+  config.allow_guests = newConfig.allow_guests || config.allow_guests;
+
+  config.badge_timeout =
+    args.badge_timeout || newConfig.badge_timeout || config.badge_timeout;
 }
 
 loadConfig({ config: config.config });
@@ -73,50 +71,43 @@ program
   .name("nowTalkSrv")
   .usage("[options]")
   .description(
-    "The nowTalk Switchboard server for communicating over a serial port. Pressing ctrl+c exits."
+    "The nowTalk server for communicating over a serial port. Pressing ctrl+c exits."
   )
-  .option(
-    "-p, --port <commport>",
-    "Commport name of the serial port",
-    config.commport
-  )
+  .option("-p, --port <serialport>", "serial port name", config.serialport)
   .option("-b, --baud <baudrate>", "Used baudrate", config.baudrate)
   .option(
-    "-n, --name <name>",
+    "-n, --name <server_name>",
     "Name of this switchboard",
-    config.switchboardName
+    config.server_name
   )
   .option(
-    "-c, --callname <callname>",
+    "-c, --call_name <call_name>",
     "Wake word to call command switchboard",
-    config.callname
+    config.call_name
   )
   .option(
-    "-t, --timeout <timeout> ",
+    "-t, --timeout <badge_timeout> ",
     "Badge timeout in seconds.",
-    config.badgeTimeout
+    config.badge_timeout
   )
-  .option("--db <sqlite>", "Database filename", config.database)
+  .option("--db <database>", "Database filename", config.database)
   .option(
-    "--dynamicIP",
-    "Your internet provider has gives dynamic IP's",
-    config.dynamicExtIP
+    "--dynamicIP <dynamic_ext_ip>",
+    "Has your internet provider has gives dynamic IP's",
+    config.dynamic_ext_ip
   )
   .option(
-    "--IP <externelIP>",
+    "--IP <external_ip>",
     "Set your external IP address",
-    config.externelIP
+    config.external_ip
   )
   .option(
-    "--webaddress <webaddress>",
-    "Set the webservers address",
-    config.webAddress
+    "--config <config>",
+    "Alternate configuration file filename",
+    config.config
   )
-  .option("--webport <webport>", "Set the webservers port", config.webPort)
-  .option("--config <inifile>", "Alternate ini filename", config.config)
   .option("-s --silent", "Don't print console messages on the screen.")
   .option("-w --write", "Write configuration settings to file")
-  .option("--demo", "demo mode")
   .parse(argv);
 
 const args = program.opts();
@@ -136,29 +127,15 @@ const listPorts = async () => {
   }
 };
 
-
-  if (config.commport === "none") {
-
-    const run = async () => {
-      if (args.list) {
-        listPorts();
-        return;
-      }
-
-    console.log("No commport selected use the following statements to continue:");
-    listPorts();
-    _exit(1);
-  }
-
-  const main = new MainClass(config);
-  await main.start();
-
+const run = async () => {
+  console.log(
+    "No serialport selected use the following statements to continue:"
+  );
+  listPorts();
 };
 
-run().catch((error) => {
-  console.error(error);
-  _exit(1);
-});
+const main = new MainClass(config);
+await main.start();
 
 function terminate() {
   // Add a 100ms delay, so the terminal will be ready when the process effectively exit, preventing bad escape sequences drop

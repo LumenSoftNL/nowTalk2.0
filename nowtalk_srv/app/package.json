@@ -4,7 +4,7 @@
   "main": "./nowTalkSrv/app.js",
   "author": "Np v/d Spek",
   "license": "ISC",
-  "version": "1.1.9",
+  "version": "1.1.31",
   "type": "module",
   "dependencies": {
     "serialport": "^12.0.0",
@@ -23,18 +23,5 @@
     "start": "node app",
     "dev": "nodemon app",
     "list": "node app -l"
-  },
-  "config": {
-    "commport": "com20",
-    "baudrate": "921600",
-    "database": "./nowTalk.sqlite",
-    "serverName": "Bosdrift228",
-    "callname": "computer",
-    "dynamicExtIP": "false",
-    "externelIP": "false",
-    "allowGuests": true,
-    "webAddress": "*",
-    "webPort": "12158",
-    "allowNewDevice": true
   }
 }
